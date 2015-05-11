@@ -39,24 +39,50 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-       newPage();
-        
+       if (savedInstanceState != null){
+    	    try {
+				this.page = new JSONObject(savedInstanceState.getString("CURRENT_PAGE"));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+       }else{
+           newPage();
+    	  
+       } 
+       new ContentLoader(this).execute(this.page);
     }
     @Override
-    public void onResume() {
-    	super.onResume();
-    	new ContentLoader(this).execute(this.page);
+    protected void onSaveInstanceState(Bundle icicle) {
+    	super.onSaveInstanceState(icicle);    
+    	icicle.putString("CURRENT_PAGE", this.page.toString());
     }
     
     
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
+    public boolean onCreateOptionsMenu(Menu menu) {   
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Take appropriate action for each action item click
+        switch (item.getItemId()) {
+        case R.id.random:
+            // search action
+        	newPage();
+        	new ContentLoader(this).execute(this.page);
 
+            return true;
+        case R.id.action_settings:
+        	//open popup for sharing
+        	return true;
+       default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
 
     /**
      * A placeholder fragment containing a simple view.
@@ -73,22 +99,7 @@ public class MainActivity extends ActionBarActivity {
             return rootView;
         }
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Take appropriate action for each action item click
-        switch (item.getItemId()) {
-        case R.id.random:
-            // search action
-        	newPage();
-        	new ContentLoader(this).execute(this.page);
 
-            return true;
-        case R.id.action_settings:
-        	return true;
-       default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
     public void newPage(){
     	try {
  			this.page = (new Recoverer()).execute(this).get();

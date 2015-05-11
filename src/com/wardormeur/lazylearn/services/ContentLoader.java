@@ -58,7 +58,7 @@ public class ContentLoader extends AsyncTask<JSONObject,Void,Void> {
 		/*TextView content = (TextView) this.mContext.findViewById(R.id.PageContent);
 		content.setText(this.html);*/
 		WebView wv = (WebView)(this.mContext.findViewById(R.id.webView));
-		wv.loadData(this.html, "text/html", "utf-8");
+		wv.loadData(this.html, "text/html; charset=utf-8", "utf-8");
 		
 		try {
 			this.mContext.setTitle(		this.pageName.getString("title"));
