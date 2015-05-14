@@ -3,5 +3,10 @@
 
     <string name="app_name">LazyLearn</string>
     <string name="action_settings">Settings</string>
-
+	<string name="random"> \? </string>
+	<string name="back_to_random"> Back </string>
+	<string name="save">Save</string>
+	<string name="favorites">Fav</string>
+	<string name="history">History</string>
+	
 </resources>

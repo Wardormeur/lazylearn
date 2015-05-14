@@ -28,6 +28,8 @@ public class Recoverer extends AsyncTask<Context,Void,JSONObject>{
 	//private String rpapi = "w/api.php?action=query&disableeditsection&disablepp&prop=extracts&format=json&titles=";
 	private String rpapi = "w/api.php?action=parse&disableeditsection&disablepp&fullurl&disabletoc&format=json&page=";
 	private String rurl = "";
+	public URL lastUrl ;
+	private boolean fromHistory = false;
 	private String lang = "en";
 	public void setParams(Context ctx){//ehere starts DI nightmare
 		
@@ -40,7 +42,22 @@ public class Recoverer extends AsyncTask<Context,Void,JSONObject>{
 	@Override
 	protected JSONObject doInBackground(Context... params) {
 		setParams(params[0]);
-		return getContent(craftURL(getRandomURL()));
+		if(!this.fromHistory){
+			this.lastUrl = getRandomURL();
+		}else{
+			this.fromHistory = false;//lastUrl is already set 
+		}
+		return getContent(craftURL(this.lastUrl));
+	}
+	
+	public void setUrl(String url){
+		try {
+			this.lastUrl = new URL(url);
+			this.fromHistory = true;
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -53,7 +70,6 @@ public class Recoverer extends AsyncTask<Context,Void,JSONObject>{
 			HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
 			conn.setInstanceFollowRedirects(false);  //you still need to handle redirect manully.
 			//we know it's gonna redirect..
-			Log.i("follow", conn.getHeaderFields().keySet().toString());
 			return new URL(conn.getHeaderField("Location"));
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block

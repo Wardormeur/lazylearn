@@ -1,0 +1,35 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.wardormeur.lazylearn.HistoryActivity" >
+    <item
+        android:id="@+id/back_to_random"
+        android:title="@string/back_to_random"
+        android:visible="true"
+        app:showAsAction="always" 
+        android:icon="@drawable/ic_find_replace_white_36dp"/>
+    
+  <group android:id="@+id/group"
+      	android:visible="true" android:enabled="true">
+    
+
+	  <item
+	        android:id="@+id/favorites"
+	        android:showAsAction="always"
+	    	android:title="@string/favorites"
+	    	android:icon="@drawable/ic_favorite_white_36dp"
+	    	android:orderInCategory="100"
+	  />     
+	  <item
+	        android:id="@+id/history"
+	        android:showAsAction="always"
+	    	android:title="@string/history"
+	    	android:icon="@drawable/ic_history_white_36dp"
+	    	android:orderInCategory="100"
+	  />    
+ 
+ </group>
+ 
+
+
+</menu>

@@ -2,25 +2,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.wardormeur.lazylearn.MainActivity" >
- 
+  <group android:id="@+id/group"
+      	android:visible="true" android:enabled="true">
     <item
         android:id="@+id/random"
-        android:orderInCategory="90"
-        android:title="@string/abc_searchview_description_submit"
-            android:showAsAction="always"/>
+        android:title="@string/random"
+        android:visible="true"
+        app:showAsAction="always" 
+        android:icon="@drawable/ic_find_replace_white_36dp"/>
     
     
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="95"
-        android:title="@string/abc_shareactionprovider_share_with"
-            android:showAsAction="always"/>
-     <item
-            android:id="@+id/menu_item_share"
-            android:showAsAction="ifRoom"
-            android:title="Share"
-            android:actionProviderClass=
-                "android.widget.ShareActionProvider" />
+        android:id="@+id/save"
+        android:title="@string/save"
+        android:visible="true"
+        app:showAsAction="always" />
+        <!-- android:icon="@drawable/ic_favorite_outline_white_36dp"/> -->
+    </group>
+  <item
+        android:id="@+id/favorites"
+        android:showAsAction="ifRoom"
+    	android:title="@string/favorites"
+    	android:icon="@drawable/ic_favorite_white_36dp"
+    	android:orderInCategory="100"
+  />    
+  <item
+        android:id="@+id/menu_item_share"
+        android:showAsAction="ifRoom"
+    	android:title="@string/abc_shareactionprovider_share_with"
+    	android:orderInCategory="100"
+        android:actionProviderClass="android.widget.ShareActionProvider"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider" 
+    	android:icon="@drawable/ic_action_share"/>
 
 
 </menu>
