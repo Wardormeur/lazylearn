@@ -29,6 +29,7 @@ public class Recoverer extends AsyncTask<Context,Void,JSONObject>{
 	private String rpapi = "w/api.php?action=parse&disableeditsection&disablepp&fullurl&disabletoc&format=json&page=";
 	private String rurl = "";
 	public URL lastUrl ;
+	
 	private boolean fromHistory = false;
 	private String lang = "en";
 	public void setParams(Context ctx){//ehere starts DI nightmare

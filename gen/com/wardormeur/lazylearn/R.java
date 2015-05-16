@@ -3076,9 +3076,8 @@ containing a value of this type.
         public static final int end=0x7f050013;
         public static final int expand_activities_button=0x7f050026;
         public static final int expanded_menu=0x7f05002c;
-        public static final int favorites=0x7f050041;
+        public static final int favorites=0x7f050043;
         public static final int group=0x7f050040;
-        public static final int history=0x7f050042;
         public static final int home=0x7f050014;
         public static final int homeAsUp=0x7f050005;
         public static final int icon=0x7f05002a;
@@ -3087,7 +3086,7 @@ containing a value of this type.
         public static final int listHistory=0x7f05003d;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
-        public static final int menu_item_share=0x7f050045;
+        public static final int menu_item_share=0x7f050044;
         public static final int middle=0x7f050012;
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
@@ -3095,8 +3094,8 @@ containing a value of this type.
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
         public static final int radio=0x7f05002f;
-        public static final int random=0x7f050043;
-        public static final int save=0x7f050044;
+        public static final int random=0x7f050041;
+        public static final int save=0x7f050042;
         public static final int search_badge=0x7f050032;
         public static final int search_bar=0x7f050031;
         public static final int search_button=0x7f050033;
@@ -3257,10 +3256,6 @@ containing a value of this type.
         /**  Application theme. 
          */
         public static final int AppTheme=0x7f0b008c;
-        /**  ActionBar tabs text 
- The textColor property is backward compatible with the Support Library 
-         */
-        public static final int MyActionBarTabText=0x7f0b008d;
         /**  Mimic text appearance in select_dialog_item.xml 
          */
         public static final int TextAppearance_AppCompat_Base_CompactMenu_Dialog=0x7f0b0063;

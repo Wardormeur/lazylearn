@@ -37,31 +37,42 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-       Bundle extras = this.getIntent().getExtras();
-       if(extras != null){
-    	   String fromHistory =  extras.get("URL").toString();
-	       if(!TextUtils.isEmpty(fromHistory)){
-	    	   newPage(fromHistory);
-	       }
-	     
+        this.hst = new History(this);
+        
+//        this.hst.clean();
+       //rotation happns 
+	   if (savedInstanceState != null){
+    	    try {
+				this.page = new JSONObject(savedInstanceState.getString("CURRENT_PAGE"));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+       //last choice possible of reload : get a new page
        }else{
-	    	   //Else if we got a rotation
-		       if (savedInstanceState != null){
-		    	    try {
-						this.page = new JSONObject(savedInstanceState.getString("CURRENT_PAGE"));
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-		       //last choice possible of reload : get a new page
-		       }else{
-		           newPage("");
-		    	  
-		       } 
-	       }
-       new ContentLoader(this).execute(this.page);
-       this.hst = new History(this);
+           newPage("");
+    	  
+       } 
+      this.loadPage();
+
     }
+    @Override
+    public void onNewIntent(Intent intent){
+    	 Bundle extras = intent.getExtras();
+          
+    	if(extras != null){
+      	   String fromHistory =  extras.get("URL").toString();
+  	       if(!TextUtils.isEmpty(fromHistory)){
+  	    	   newPage(fromHistory);
+  	       }
+    	}else{
+    		this.newPage("");
+    	}
+    	this.loadPage();
+    	
+    	super.onNewIntent(intent);
+    }
+    
     @Override
     protected void onSaveInstanceState(Bundle icicle) {
     	super.onSaveInstanceState(icicle);    
@@ -71,9 +82,8 @@ public class MainActivity extends ActionBarActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {    
     	if(todo){
     		MenuItem item = menu.findItem(R.id.save);
-            String url = getSharedPreferences("history",0).getString("last", "");
-			item.setIcon(//oh god, this is ugly.
-						hst.getStatus(url)
+			item.setIcon(
+						hst.getStatus(this.hst.lastUrl)
 						?R.drawable.ic_favorite_outline_white_36dp:R.drawable.ic_favorite_white_36dp);
     		todo = false;
     	}
@@ -91,7 +101,7 @@ public class MainActivity extends ActionBarActivity {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "Check this out ! "+getSharedPreferences("history",0).getString("last", ""));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Check this out ! "+(this.hst.getLast() != null ?this.hst.getLast().getKey():""));
         mShareActionProvider.setShareIntent(shareIntent);
 
         return super.onCreateOptionsMenu(menu);
@@ -104,22 +114,18 @@ public class MainActivity extends ActionBarActivity {
         switch (item.getItemId()) {
         case R.id.random:
             // search action
-        	newPage("");
-        	new ContentLoader(this).execute(this.page);
+        	this.newPage("");
+        	this.loadPage();
             return true;
         case R.id.save:
         	//hst return a bool regarding the actual state of the fav
-        	try {
-				hst.toggleFav(getSharedPreferences("history",0).getString("last", ""), this.page.getJSONObject("parse").getString("title"));
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			hst.toggleFav(this.hst.lastUrl,this.hst.lastTitle); //NO, WERE NOT GONNA STOCK IT, interface ftw			
         	todo = true;
         	supportInvalidateOptionsMenu();
         	return true;
         case R.id.favorites:
-        	startActivity(new Intent(MainActivity.this,HistoryActivity.class));
+        	Intent hist = new Intent(MainActivity.this,HistoryActivity.class);
+        	startActivity(hist);
         	return true;
        default:
     	   return super.onOptionsItemSelected(item);
@@ -151,7 +157,7 @@ public class MainActivity extends ActionBarActivity {
     			rcv.setUrl(url);
     		}
     		this.page = rcv.execute(this).get();
-    		getSharedPreferences("history",0).edit().putString("last", rcv.lastUrl.toString()).commit();
+    		this.hst.lastUrl = rcv.lastUrl.toString();
     		todo = true;
     		supportInvalidateOptionsMenu();
     		
@@ -162,6 +168,21 @@ public class MainActivity extends ActionBarActivity {
  			// TODO Auto-generated catch block
  			e.printStackTrace();
  		}
+    	
+    }
+    public void loadPage(){
+    	ContentLoader cL = new ContentLoader(this);
+        try {
+     	   this.hst.lastTitle =  cL.execute(this.page).get();
+ 		} catch (InterruptedException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		} catch (ExecutionException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
+ 		this.hst.hist(this.hst.lastUrl, this.hst.lastTitle);
+     	supportInvalidateOptionsMenu();
     	
     }
     

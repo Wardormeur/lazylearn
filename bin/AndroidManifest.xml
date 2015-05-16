@@ -26,9 +26,12 @@
             </intent-filter>
         </activity> 
         <activity
-            android:name="com.wardormeur.lazylearn.HistoryActivity"
-            android:noHistory="true"
-            >
+            android:name="com.wardormeur.lazylearn.HistoryActivity"        
+            android:parentActivityName="com.wardormeur.lazylearn.MainActivity" >
+		       <!-- Parent activity meta-data to support 4.0 and lower -->
+	       <meta-data
+	           android:name="android.support.PARENT_ACTIVITY"
+	           android:value="com.wardormeur.lazylearn.MainActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

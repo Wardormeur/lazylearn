@@ -28,12 +28,13 @@ import android.widget.TextView;
 
 
 
-public class ContentLoader extends AsyncTask<JSONObject,Void,Void> {
+public class ContentLoader extends AsyncTask<JSONObject,Void,String> {
 
 	private Activity mContext;
 	private JSONObject pageName;
 	//private Spanned html;
 	private String html;
+	public String lastTitle;
 	
 	public ContentLoader(Activity ctx){
 		this.mContext = ctx;
@@ -41,11 +42,12 @@ public class ContentLoader extends AsyncTask<JSONObject,Void,Void> {
 	}
 
 	@Override
-	protected Void doInBackground(JSONObject... params) {
+	protected String doInBackground(JSONObject... params) {
 		try {
 			this.pageName = (JSONObject) params[0].getJSONObject("parse");
 			//this.html = Html.fromHtml(pageName.getJSONObject("text").getString("*"),imgGetter,null);
 			this.html = pageName.getJSONObject("text").getString("*").replaceAll("//upload.wikimedia", "http://upload.wikimedia");
+			return this.pageName.getString("title");
 		 } catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,54 +56,14 @@ public class ContentLoader extends AsyncTask<JSONObject,Void,Void> {
 		return null;
    }
 	@Override
-   protected void onPostExecute(Void v) {
-		/*TextView content = (TextView) this.mContext.findViewById(R.id.PageContent);
-		content.setText(this.html);*/
+   protected void onPostExecute(String v) {
+		//we control the display
 		WebView wv = (WebView)(this.mContext.findViewById(R.id.webView));
 		wv.loadData(this.html, "text/html; charset=utf-8", "utf-8");
 		
-		try {
-			this.mContext.setTitle(		this.pageName.getString("title"));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.mContext.setTitle(v);
+	
 		
    }
-	
-    private ImageGetter imgGetter = new Html.ImageGetter() {
-        @Override
-        public Drawable getDrawable(String source) {
-        	  HttpGet get = new HttpGet("http://"+source);
-              DefaultHttpClient client = new DefaultHttpClient();
-              Drawable drawable = null;
-              try {
-                      HttpResponse response = client.execute(get);
-                      InputStream stream = response.getEntity().getContent();
-                      FileOutputStream fileout = new FileOutputStream(new File(
-                                      Environment.getExternalStorageDirectory()
-                                                      .getAbsolutePath()
-                                                      + "/test.jpg"));
-                      int read = stream.read();
-                      while (read != -1) {
-                              fileout.write(read);
-                              read = stream.read();
-                      }
-                      fileout.flush();
-                      fileout.close();
-                      drawable = Drawable.createFromPath(Environment
-                                      .getExternalStorageDirectory().getAbsolutePath()
-                                      + "/test.jpg");
-                      drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable
-                                      .getIntrinsicHeight());
-
-              } catch (ClientProtocolException e) {
-                      e.printStackTrace();
-              } catch (IOException e) {
-                      e.printStackTrace();
-              }
-              return drawable;
-        }
- };
 	
 } 
