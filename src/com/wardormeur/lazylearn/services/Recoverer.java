@@ -26,7 +26,7 @@ public class Recoverer extends AsyncTask<Context,Void,JSONObject>{
 	private String base = "m.wikipedia.org/";
 	private String rpurl = "wiki/Special:Random"; 
 	//private String rpapi = "w/api.php?action=query&disableeditsection&disablepp&prop=extracts&format=json&titles=";
-	private String rpapi = "w/api.php?action=parse&disableeditsection&disablepp&fullurl&disabletoc&format=json&page=";
+	private String rpapi = "w/api.php?action=parse&disableeditsection&disablepp&disabletoc&format=json&redirects&page=";
 	private String rurl = "";
 	public URL lastUrl ;
 	

@@ -21,7 +21,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.ShareActionProvider;
-
+//Should i use it?
+//http://www.integratingstuff.com/2012/04/06/hook-into-wikipedia-using-java-and-the-mediawiki-api/
 public class MainActivity extends ActionBarActivity {
 	private JSONObject page;
 	private ShareActionProvider mShareActionProvider;
